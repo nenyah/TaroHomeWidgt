@@ -1,0 +1,8 @@
+.index {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  .record-content {
+    margin-bottom: 20px;
+  }
+}

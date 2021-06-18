@@ -1,0 +1,14 @@
+.index {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  .searchbar {
+    width: 80vw;
+  }
+  .content {
+    height: 80vh;
+  }
+  .scan-button {
+    height: 10vh;
+  }
+}
