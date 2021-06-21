@@ -6,7 +6,57 @@ import "./index.scss"
 
 class Index extends Component {
   state = {
-    value: ""
+    value: "",
+    outDatedItem: [
+      {
+        id: 1,
+        goods: "牛奶",
+        location: "冰箱",
+        validDays: 1,
+        img_url:
+          "http://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png"
+      },
+      {
+        id: 2,
+        goods: "牛奶",
+        location: "冰箱",
+        validDays: 2,
+        img_url:
+          "http://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png"
+      },
+      {
+        id: 3,
+        goods: "牛奶",
+        location: "冰箱",
+        validDays: 3,
+        img_url:
+          "http://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png"
+      },
+      {
+        id: 4,
+        goods: "牛奶",
+        location: "冰箱",
+        validDays: 4,
+        img_url:
+          "http://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png"
+      },
+      {
+        id: 5,
+        goods: "牛奶",
+        location: "冰箱",
+        validDays: 5,
+        img_url:
+          "http://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png"
+      },
+      {
+        id: 6,
+        goods: "牛奶",
+        location: "冰箱",
+        validDays: 6,
+        img_url:
+          "http://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png"
+      }
+    ]
   }
   // 可以使用所有的 React 组件方法
   componentDidMount() {
@@ -51,10 +101,22 @@ class Index extends Component {
       }
     })
   }
-  handleClick = e => {
-    console.log(e)
+  handleClick = (id, e) => {
+    console.log(id, e)
+    Taro.navigateTo({
+      url: `/pages/detail/detail?id=${id}`
+    })
   }
   render() {
+    const { outDatedItem } = this.state
+    const listItems = outDatedItem.map(el => (
+      <AtListItem
+        title={`${el.location}中的${el.goods}还是${el.validDays}天过期了！！`}
+        onClick={e => this.handleClick(el.id, e)}
+        thumb={el.img_url}
+        key={el.id}
+      />
+    ))
     return (
       <View className='index'>
         <AtSearchBar
@@ -62,43 +124,7 @@ class Index extends Component {
           onChange={this.onChange}
           className='searchbar'
         />
-        <AtList className='content'>
-          <AtListItem
-            title='冰箱中的牛奶还是两天过期了！！'
-            onClick={this.handleClick}
-            thumb='http://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png'
-          />
-          <AtListItem
-            title='冰箱中的牛奶还是两天过期了！！'
-            onClick={this.handleClick}
-            thumb='http://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png'
-          />
-          <AtListItem
-            title='冰箱中的牛奶还是两天过期了！！'
-            onClick={this.handleClick}
-            thumb='http://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png'
-          />
-          <AtListItem
-            title='冰箱中的牛奶还是两天过期了！！'
-            onClick={this.handleClick}
-            thumb='http://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png'
-          />
-          <AtListItem
-            title='冰箱中的牛奶还是两天过期了！！'
-            onClick={this.handleClick}
-            thumb='http://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png'
-          />
-          <AtListItem
-            title='冰箱中的牛奶还是两天过期了！！'
-            onClick={this.handleClick}
-            thumb='http://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png'
-          />
-          <AtListItem
-            title='冰箱中的牛奶还是两天过期了！！'
-            onClick={this.handleClick}
-            thumb='http://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png'
-          />
-        </AtList>
+        <AtList className='content'>{listItems}</AtList>
         <AtButton
           type='primary'
           className='scan-button'
@@ -110,5 +136,4 @@ class Index extends Component {
     )
   }
 }
-
 export default Index

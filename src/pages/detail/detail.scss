@@ -1,0 +1,8 @@
+.index {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  .content {
+    width: 90vw;
+  }
+}

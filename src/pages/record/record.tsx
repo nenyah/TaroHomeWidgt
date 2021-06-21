@@ -1,10 +1,12 @@
 import { View, Image, Picker } from "@tarojs/components"
 import React, { Component } from "react"
 import { AtButton, AtForm, AtInput, AtList, AtListItem } from "taro-ui"
+import Taro from "@tarojs/taro"
 import "./record.scss"
 
 export default class Record extends Component {
   state = {
+    img_url: "https://t7.baidu.com/it/u=1819248061,230866778&fm=193&f=GIF",
     goods: "",
     location: "",
     expDate: "无",
@@ -20,6 +22,9 @@ export default class Record extends Component {
   }
   onSubmit = () => {
     console.log(this.state)
+    Taro.redirectTo({
+      url: "/pages/detail/detail?id=1"
+    })
   }
   onReset = () => {
     this.setState({
@@ -36,23 +41,20 @@ export default class Record extends Component {
     })
   }
   render() {
+    let { img_url, goods, location, expDate, mfgDate, validDays } = this.state
     return (
       <View className='index'>
         <Image
           style='width: 300px;height: 200px;background: #fff;'
-          src='https://t7.baidu.com/it/u=1819248061,230866778&fm=193&f=GIF'
+          src={img_url}
         />
-        <AtForm
-          onSubmit={this.onSubmit.bind(this)}
-          onReset={this.onReset.bind(this)}
-          className='record-content'
-        >
+        <AtForm className='record-content'>
           <AtInput
             name='goods'
             title='品名'
             type='text'
             placeholder='物品名称'
-            value={this.state.goods}
+            value={goods}
             onChange={e => {
               this.handleChange(e, "goods")
             }}
@@ -62,7 +64,7 @@ export default class Record extends Component {
             title='位置'
             type='text'
             placeholder='物品存储位置'
-            value={this.state.location}
+            value={location}
             onChange={e => {
               this.handleChange(e, "location")
             }}
@@ -73,10 +75,10 @@ export default class Record extends Component {
               onChange={e => {
                 this.onDateChange(e, "expDate")
               }}
-              value={this.state.expDate}
+              value={expDate}
             >
               <AtList>
-                <AtListItem title='过期日期' extraText={this.state.expDate} />
+                <AtListItem title='过期日期' extraText={expDate} />
               </AtList>
             </Picker>
           </View>
@@ -86,10 +88,10 @@ export default class Record extends Component {
               onChange={e => {
                 this.onDateChange(e, "mfgDate")
               }}
-              value={this.state.mfgDate}
+              value={mfgDate}
             >
               <AtList>
-                <AtListItem title='生产日期' extraText={this.state.mfgDate} />
+                <AtListItem title='生产日期' extraText={mfgDate} />
               </AtList>
             </Picker>
           </View>
@@ -98,7 +100,7 @@ export default class Record extends Component {
             title='有效天数'
             type='text'
             placeholder='有效天数'
-            value={this.state.validDays}
+            value={validDays}
             onChange={e => {
               this.handleChange(e, "validDays")
             }}

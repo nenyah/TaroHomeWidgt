@@ -1,9 +1,17 @@
+/*
+ * @Author: your name
+ * @Date: 2021-06-17 15:31:24
+ * @LastEditTime: 2021-06-21 09:40:57
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \myApp\src\app.config.ts
+ */
 export default {
   pages: [
-    'pages/record/record',
     'pages/index/index',
-    'pages/profile/profile',
+    'pages/record/record',
     'pages/detail/detail',
+    'pages/profile/profile',
   ],
   tabBar: {
     list: [{
