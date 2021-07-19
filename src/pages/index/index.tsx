@@ -1,83 +1,61 @@
-import Taro, { getCurrentInstance } from "@tarojs/taro"
 import { View } from "@tarojs/components"
+import Taro, { getCurrentInstance } from "@tarojs/taro"
 import React, { Component } from "react"
-import { AtSearchBar, AtList, AtListItem, AtButton } from "taro-ui"
+import { AtButton, AtSearchBar } from "taro-ui"
+import { ItemList } from "../../components/item_list"
 import "./index.scss"
 
 class Index extends Component {
   state = {
+    loading: true,
     value: "",
-    outDatedItem: [
-      {
-        id: 1,
-        goods: "牛奶",
-        location: "冰箱",
-        validDays: 1,
-        img_url:
-          "http://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png"
-      },
-      {
-        id: 2,
-        goods: "牛奶",
-        location: "冰箱",
-        validDays: 2,
-        img_url:
-          "http://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png"
-      },
-      {
-        id: 3,
-        goods: "牛奶",
-        location: "冰箱",
-        validDays: 3,
-        img_url:
-          "http://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png"
-      },
-      {
-        id: 4,
-        goods: "牛奶",
-        location: "冰箱",
-        validDays: 4,
-        img_url:
-          "http://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png"
-      },
-      {
-        id: 5,
-        goods: "牛奶",
-        location: "冰箱",
-        validDays: 5,
-        img_url:
-          "http://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png"
-      },
-      {
-        id: 6,
-        goods: "牛奶",
-        location: "冰箱",
-        validDays: 6,
-        img_url:
-          "http://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png"
-      }
-    ]
+    items: []
   }
   // 可以使用所有的 React 组件方法
-  componentDidMount() {
+  async componentDidMount() {
     // 获取路由参数
-    console.log(this.$instance.router)
+    console.log("Index componentDidMount")
+    // todo 1. 检查是否登录 没有登录跳转到个人中心登录
+    
+    // todo 2. 下载最近10条近期物品
+    let res = await Taro.request({
+      url: "https://example.com/items",
+    })
+
+    let items = res.statusCode == 200 ? res.data.items : []
+    this.setState({
+      items,
+      loading: false,
+    })
+
   }
   // onLoad
-  onLoad() {}
+  onLoad() {
+    console.log("Index onLoad")
+
+  }
 
   // onReady
-  onReady() {}
+  onReady() {
+    console.log("Index onReady")
+
+  }
 
   // 对应 onShow
-  componentDidShow() {}
+  componentDidShow() {
+    console.log("Index componentDidShow")
+
+  }
 
   // 对应 onHide
-  componentDidHide() {}
+  componentDidHide() {
+    console.log("Index componentDidHide")
 
-  // 对应 onPullDownRefresh，除了 componentDidShow/componentDidHide 之外，
-  // 所有页面生命周期函数名都与小程序相对应
-  onPullDownRefresh() {}
+  }
+  onReachBottom() {
+    console.log("触底加载更多")
+
+  }
   // 建议在页面初始化时把 getCurrentInstance() 的结果保存下来供后面使用，
   // 而不是频繁地调用此 API
   $instance = getCurrentInstance()
@@ -89,42 +67,45 @@ class Index extends Component {
       value: value
     })
   }
-  takePhoto = () => {
-    Taro.chooseImage({
+  takePhoto = async () => {
+    let res = await Taro.chooseImage({
       count: 1, // 默认9
       sizeType: ["original", "compressed"], // 可以指定是原图还是压缩图，默认二者都有
       sourceType: ["album", "camera"], // 可以指定来源是相册还是相机，默认二者都有，在H5浏览器端支持使用 `user` 和 `environment`分别指定为前后摄像头
-      success: res => {
-        // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
-        let tempFilePaths = res.tempFilePaths
-        console.log(tempFilePaths)
-      }
+
+    })
+    // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+    let tempFilePaths = res.tempFilePaths
+    // todo  预览时上传图片 
+    console.log(tempFilePaths)
+    Taro.previewImage({
+      current: tempFilePaths.length > 0 ? tempFilePaths[1] : '', // 当前显示图片的http链接
+      urls: tempFilePaths // 需要预览的图片http链接列表
+    })
+    // 成功跳转记录页
+    Taro.navigateTo({
+      url: `/pages/record/record`,
     })
   }
-  handleClick = (id, e) => {
-    console.log(id, e)
-    Taro.navigateTo({
-      url: `/pages/detail/detail?id=${id}`
-    })
+  handleSearch = () => {
+    console.log("begin search", this.state.value)
+
   }
   render() {
-    const { outDatedItem } = this.state
-    const listItems = outDatedItem.map(el => (
-      <AtListItem
-        title={`${el.location}中的${el.goods}还是${el.validDays}天过期了！！`}
-        onClick={e => this.handleClick(el.id, e)}
-        thumb={el.img_url}
-        key={el.id}
-      />
-    ))
+    const { items, loading } = this.state
     return (
       <View className='index'>
         <AtSearchBar
           value={this.state.value}
           onChange={this.onChange}
+          onConfirm={this.handleSearch}
+          onActionClick={this.handleSearch}
           className='searchbar'
         />
-        <AtList className='content'>{listItems}</AtList>
+        <ItemList
+          items={items}
+          loading={loading}
+        ></ItemList>
         <AtButton
           type='primary'
           className='scan-button'

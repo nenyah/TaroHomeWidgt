@@ -1,7 +1,8 @@
-import { View, Image, Picker } from "@tarojs/components"
+import { BaseEventOrig, Image, Picker, View } from "@tarojs/components"
+import { PickerDateProps } from '@tarojs/components/types/Picker'
+import Taro from "@tarojs/taro"
 import React, { Component } from "react"
 import { AtButton, AtForm, AtInput, AtList, AtListItem } from "taro-ui"
-import Taro from "@tarojs/taro"
 import "./record.scss"
 
 export default class Record extends Component {
@@ -13,7 +14,7 @@ export default class Record extends Component {
     mfgDate: "无",
     validDays: ""
   }
-  handleChange = (value, name) => {
+  handleChange = (value: string | number, name: string) => {
     console.log(value, name)
 
     this.setState({
@@ -35,7 +36,7 @@ export default class Record extends Component {
       validDays: ""
     })
   }
-  onDateChange = (e, name) => {
+  onDateChange = (e: BaseEventOrig<PickerDateProps.ChangeEventDetail>, name: string) => {
     this.setState({
       [name]: e.detail.value
     })

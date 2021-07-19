@@ -1,3 +1,4 @@
 export default {
-  navigationBarTitleText: 'Home'
+  navigationBarTitleText: '备忘神器',
+
 }

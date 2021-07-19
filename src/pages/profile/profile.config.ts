@@ -1,3 +1,3 @@
 export default {
-  navigationBarTitleText: 'Profile'
+  navigationBarTitleText: '个人中心'
 }

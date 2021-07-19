@@ -1,3 +1,3 @@
 export default {
-  navigationBarTitleText: 'Record'
+  navigationBarTitleText: '物品登记'
 }
