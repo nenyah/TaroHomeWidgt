@@ -53,5 +53,5 @@ class ItemList extends React.Component<IProps, {}> {
     }
 }
 
-export { ItemList }
+export { ItemList, IItem }
 

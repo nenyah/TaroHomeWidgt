@@ -2,10 +2,23 @@ import { View } from "@tarojs/components"
 import Taro, { getCurrentInstance } from "@tarojs/taro"
 import React, { Component } from "react"
 import { AtButton, AtSearchBar } from "taro-ui"
-import { ItemList } from "../../components/item_list"
+import { ItemList, IItem } from "../../components/item_list"
 import "./index.scss"
 
-class Index extends Component {
+interface IState {
+  loading: boolean
+  value: string
+  items: IItem[]
+}
+interface IData {
+  items: IItem[]
+}
+interface IResponse {
+  data: IData
+  statusCode: number
+  header: object
+}
+class Index extends Component<{}, IState> {
   state = {
     loading: true,
     value: "",
@@ -16,13 +29,14 @@ class Index extends Component {
     // 获取路由参数
     console.log("Index componentDidMount")
     // todo 1. 检查是否登录 没有登录跳转到个人中心登录
-    
+
     // todo 2. 下载最近10条近期物品
-    let res = await Taro.request({
+    let { statusCode, data } = await Taro.request<IResponse>({
       url: "https://example.com/items",
     })
+    console.log("res:::", data)
 
-    let items = res.statusCode == 200 ? res.data.items : []
+    let items = statusCode == 200 ? data.items : []
     this.setState({
       items,
       loading: false,
@@ -70,7 +84,7 @@ class Index extends Component {
   takePhoto = async () => {
     let res = await Taro.chooseImage({
       count: 1, // 默认9
-      sizeType: ["original", "compressed"], // 可以指定是原图还是压缩图，默认二者都有
+      sizeType: ["compressed"], // 可以指定是原图还是压缩图，默认二者都有
       sourceType: ["album", "camera"], // 可以指定来源是相册还是相机，默认二者都有，在H5浏览器端支持使用 `user` 和 `environment`分别指定为前后摄像头
 
     })
